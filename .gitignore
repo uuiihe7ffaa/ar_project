@@ -1,0 +1,10 @@
+**pycache**/
+*.pyc
+venv/
+.vscode/
+.idea/
+model.pkl
+mlb.pkl
+.env
+.DS_Store
+Thumbs.db
