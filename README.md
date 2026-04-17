@@ -19,33 +19,6 @@
 * fastapi
 * uvicorn
 * streamlit
-
----
-
-## Структура проекта
-
-```
-aspect_review_project/
-│
-├── training/
-│   ├── dataset.csv
-│   └── train_model.py
-│
-├── app/
-│   ├── main.py
-│   ├── model.py
-│   └── schemas.py
-│
-├── ui/
-│   └── streamlit_app.py
-│
-├── models/
-│   ├── model.pkl
-│   └── label_encoder.pkl
-│
-└── requirements.txt
-```
-
 ---
 
 # 1. Обучение модели
