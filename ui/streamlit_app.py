@@ -6,7 +6,7 @@ API_URL = "http://127.0.0.1:8000/analyze"
 st.set_page_config(page_title="Анализ отзывов по аспектам", page_icon="📝")
 
 st.title("📝 Анализ отзывов по аспектам")
-st.write("Выберите тип места, введите отзыв, и система определит аспекты текста.")
+st.write("Выберите тип места, введите отзыв, и система определит его основной аспект.")
 
 place_type = st.selectbox(
     "Тип места",
@@ -32,13 +32,14 @@ if st.button("Анализировать"):
             response.raise_for_status()
             data = response.json()
 
-            st.subheader("Обнаруженные аспекты")
-            for aspect in data["predicted_aspects"]:
-                st.write(f"• {aspect}")
+            st.subheader("Основной аспект")
+            st.success(data["predicted_aspect"])
 
             st.subheader("Вероятности по аспектам")
             probs = data.get("probabilities", {})
-            for label, score in probs.items():
+            sorted_probs = sorted(probs.items(), key=lambda x: x[1], reverse=True)
+
+            for label, score in sorted_probs:
                 st.progress(float(score), text=f"{label}: {score:.3f}")
 
         except Exception as e:
