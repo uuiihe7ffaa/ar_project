@@ -1,4 +1,5 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import JSONResponse
 from app.schemas import ReviewRequest
 from app.predictor import predict_aspect
 
@@ -16,11 +17,17 @@ def root():
 
 @app.post("/analyze")
 def analyze_review(request: ReviewRequest):
-    aspect, probabilities = predict_aspect(request.place_type, request.text)
+    try:
+        aspect, probabilities = predict_aspect(request.place_type, request.text)
 
-    return {
-        "place_type": request.place_type,
-        "text": request.text,
-        "predicted_aspect": aspect,
-        "probabilities": probabilities
-    }
+        payload = {
+            "place_type": str(request.place_type),
+            "text": str(request.text),
+            "predicted_aspect": str(aspect),
+            "probabilities": {str(k): float(v) for k, v in probabilities.items()}
+        }
+
+        return JSONResponse(content=payload)
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
